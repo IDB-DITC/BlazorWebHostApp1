@@ -1,0 +1,82 @@
+﻿@inject HttpClient http
+@page "/add"
+
+<EditForm Model="employee" OnValidSubmit="SaveEmployee" >
+	<fieldset>
+		<legend>Add Employee</legend>
+		<div >
+			<DataAnnotationsValidator/>
+			<ValidationSummary/>
+		</div>
+
+		<div>
+			<InputText @bind-Value="employee.EmpName" />
+			<ValidationMessage For="()=> employee.EmpName"/>
+		</div>
+		<div>
+			<InputDate @bind-Value="employee.Join" />
+			<ValidationMessage For="()=> employee.Join" />
+		</div>
+		<div>
+			<InputFile OnChange="FileSelected" />
+		</div>
+
+
+
+
+	</fieldset>
+
+
+	<button class="btn btn-outline-success">Save</button>
+
+</EditForm>
+
+
+
+@code {
+
+	Employee employee = new Employee();
+
+
+
+
+
+	void FileSelected(InputFileChangeEventArgs e)
+	{
+		var str = e.File.OpenReadStream();
+		//Convert.ToBase64String(str.read)
+
+
+
+
+		ImageData imageData = new ImageData(e.File.OpenReadStream(), e.File.Name);
+
+
+
+		employee.ImageData = imageData;
+	}
+
+
+
+	async Task SaveEmployee()
+	{
+		var response = await this.http.PostAsJsonAsync<Employee>("api/Employess", this.employee);
+
+
+
+		if (response.IsSuccessStatusCode)
+		{
+
+		}
+		else
+		{
+			string result = await response.Content.ReadAsStringAsync();
+		}
+	}
+
+
+
+
+
+
+}

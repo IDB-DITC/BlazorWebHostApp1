@@ -1,0 +1,29 @@
+﻿@page "/list"
+@inject HttpClient http
+<h3>Employee List</h3>
+
+<NavLink href="add" class="btn btn-outline-info">Add</NavLink>
+<hr />
+<table>
+
+</table>
+
+
+
+
+
+@code {
+	List<Employee>? data = new List<Employee>();
+
+
+
+
+	protected override async Task OnInitializedAsync()
+	{
+
+		data = await this.http.GetFromJsonAsync<List<Employee>?>("Employees");
+	}
+
+
+
+}
